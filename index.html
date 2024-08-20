@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <title>Discord Webhook Spammer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+<body> 
+    <div class="container"> 
+        <h1>Discord Webhook Spammer</h1>
+        <label for="webhook">Webhook URL:</label>
+        <input type="text" id="webhook" name="webhook" placeholder="https://discord.com/api/webhooks/" autocomplete="off">
+        <label for="username">Bot Username:</label>
+        <input type="text" id="username" name="username" placeholder="Captain Hook" autocomplete="off">
+        <label for="avatar">Avatar URL:</label>
+        <input type="text" id="avatar" name="avatar" placeholder="https://cdn.discordapp.com/avatars/" autocomplete="off">
+        <label for="message">Message:</label>
+        <input type="text" id="message" name="message" placeholder="Hello World" autocomplete="off">
+        <label for="delay">Delay:</label>
+        <input type="number" id="delay" name="delay" placeholder="1" min="1" autocomplete="off">
+        <button id="startButton" class="startButton" onclick="startSpam()">Start</button>  
+        <button id="stopButton" class="stopButton" onclick="stopSpam()" disabled>Stop</button> 
+        <div class="warningDiv" id="warningDiv"></div> 
+        <div class="logContainer" id="logContainer"></div> 
+    </div> 
+    <script src="main.js"></script> 
+</body> 
+</html>
