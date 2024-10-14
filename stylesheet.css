@@ -35,10 +35,6 @@ input:hover {
 }
 
 .buttons {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
     display: flex;
     justify-content: space-between;
 }
@@ -59,6 +55,13 @@ button:hover {
 
 input:focus {
     outline: none;
+}
+
+#start, stop {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
 }
 
 #log {
