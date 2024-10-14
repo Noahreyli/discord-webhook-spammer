@@ -64,14 +64,9 @@ a, a:visited {
     background-color: #45a049;
 }
 
-.log {
-    background-color: black;
-    color: white;
-    border: 1px solid #ccc;
-    max-height: 200px;
-    overflow-y: scroll;
-    font-family: monospace;
-    white-space: pre-wrap;
-    margin-top: 20px;
-    padding: 10px;
+#log {
+    text-align: center;
+    width: 5%;
+    background-color: rgb(110, 255, 43);
+    color: green;
 }
