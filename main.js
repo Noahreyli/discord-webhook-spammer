@@ -1,133 +1,58 @@
-document.addEventListener("DOMContentLoaded", function () { 
-    const webhookUrlInput = document.getElementById("webhook"); 
-    const username = document.getElementById("username");
-    const avatarUrlInput = document.getElementById("avatar");
-    const messageInput = document.getElementById("message"); 
-    const secondsPerMessageInput = document.getElementById("delay"); 
-    const startButton = document.getElementById("startButton"); 
-    const stopButton = document.getElementById("stopButton"); 
-    const warningDiv = document.getElementById("warningDiv"); 
-    const logContainer = document.getElementById("logContainer"); 
+let intervalId;
 
-    let intervalId; 
+function startSpam() {
+    const webhookUrl = document.getElementById("url").value;
+    const username = document.getElementById("username").value || "Captain Hook";
+    const avatarUrl = document.getElementById("avatar").value || "https://cdn.discordapp.com/avatars/";
+    const message = document.getElementById("message").value || "Hello World";
+    const log = document.getElementById("log");
 
-    startButton.addEventListener("click", function (e) { 
-        e.preventDefault(); 
-        const webhook = webhookUrlInput.value; 
-        const message = messageInput.value; 
-        const delay = parseInt(secondsPerMessageInput.value); 
-        const timestamp = getTimeStamp(); 
+    if (!webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
+        log.innerHTML = '<p style="color: red;">Invalid Webhook URL</p>';
+        return;
+    }
 
-        if (!webhook.startsWith("https://discord.com/api/webhooks/")) { 
-            warningDiv.innerHTML = '⚠️ Invalid webhook URL.'; 
-            startButton.classList.add("invalidUrl"); 
-            stopButton.classList.remove("invalidUrl"); 
-            return; 
-        } 
+    document.getElementById("start").disabled = true;
+    document.getElementById("stop").disabled = false;
+    log.innerHTML = "";
 
-        if (!message || !delay || !webhook) { 
-            warningDiv.innerHTML = '⚠️ Please fill in the fields that you left empty.';
-            return;
-        } else { 
-            warningDiv.innerHTML = ''; 
-        } 
+    intervalId = setInterval(function () {
+        sendWebhook(webhookUrl, username, avatarUrl, message, log);
+    }, 2000);
+}
 
-        intervalId = setInterval(function () { 
-            if (!message) { 
-                sendMessage(webhook, timestamp); 
-            } else { 
-                sendMessageWithMessage(webhook, message, timestamp); 
-            } 
-        }, (delay * 1000));
+function stopSpam() {
+    clearInterval(intervalId);
+    document.getElementById("start").disabled = false;
+    document.getElementById("stop").disabled = true;
+    const log = document.getElementById("log");
+    log.innerHTML += '<p style="color: green;">Spamming stopped</p>';
+}
 
-        startButton.disabled = true; 
-        stopButton.disabled = false; 
-        startButton.classList.add("running"); 
-        stopButton.classList.remove("running"); 
+function sendWebhook(webhookUrl, username, avatarUrl, message, log) {
+    const payload = {
+        username: username,
+        avatar_url: avatarUrl,
+        content: message,
+    };
 
-        logContainer.innerHTML = ''; 
-    }); 
-
-    stopButton.addEventListener("click", function () { 
-        clearInterval(intervalId); 
-        startButton.disabled = false; 
-        stopButton.disabled = true; 
-        startButton.classList.remove("running"); 
-        stopButton.classList.add("running"); 
-        warningDiv.innerHTML = ''; 
-    }); 
-
-    function sendMessage(webhook, timestamp) { 
-        fetch(webhook, { 
-            method: 'POST', 
-            headers: { 
-                'Content-Type': 'application/json', 
-            }, 
-            body: JSON.stringify({ content: '' }), 
-        }) 
-        .then(response => { 
-            if (!response.ok) { 
-                if (response.status === 429) { 
-                    logContainer.innerHTML += `[${timestamp}] <div class="logRateLimit">We are being rate limited!</div>`; 
-                } else if (response.status === 204) { 
-                    logContainer.innerHTML += `[${timestamp}] <div class="logSuccess">Message sent successfully!</div>`; 
-                } else if (response.status === 400) { 
-                    logContainer.innerHTML += `[${timestamp}] <div class="logError">Bad Request ${response.statusText}</div>`; 
-                } else if (response.status === 404) { 
-                    logContainer.innerHTML += `[${timestamp}] <div class="logError">Webhook Not Found ${response.statusText}</div>`; 
-                } else { 
-                    logContainer.innerHTML += `[${timestamp}] <div class="logError">Error sending message ${response.statusText}</div>`; 
-                } 
-            } else { 
-                logContainer.innerHTML += `[${timestamp}] <div class="logSuccess">Message sent successfully</div>`; 
-            } 
-        }) 
-        .catch(error => { 
-            logContainer.innerHTML += `[${timestamp}] <div class="logError">Error sending message ${error.message}</div>`; 
-        }); 
-    } 
-
-    function sendMessageWithMessage(webhook, message, timestamp) { 
-        fetch(webhook, { 
-            method: 'POST', 
-            headers: { 
-                'Content-Type': 'application/json', 
-            }, 
-            body: JSON.stringify({ content: message }), 
-        }) 
-        .then(response => { 
-            if (!response.ok) { 
-                if (response.status === 429) { 
-                    logContainer.innerHTML += `[${timestamp}] <div class="logRateLimit">We are being rate limited!</div>`; 
-                } else if (response.status === 204) { 
-                    logContainer.innerHTML += `[${timestamp}] <div class="logSuccess">Message sent successfully</div>`; 
-                } else if (response.status === 400) { 
-                    logContainer.innerHTML += `[${timestamp}] <div class="logError">Bad Request ${response.statusText}</div>`; 
-                } else if (response.status === 404) { 
-                    logContainer.innerHTML += `[${timestamp}] <div class="logError">Webhook Not Found ${response.statusText}</div>`; 
-                } else { 
-                    logContainer.innerHTML += `[${timestamp}] <div class="logError">Error sending message: ${response.statusText}</div>`; 
-                } 
-            } else { 
-                logContainer.innerHTML += `[${timestamp}] <div class="logSuccess">Message sent successfully</div>`; 
-            } 
-        }) 
-        .catch(error => { 
-            logContainer.innerHTML += `[${timestamp}] <div class="logError">Error sending message: ${error.message}</div>`; 
-        }); 
-    } 
-
-    function getTimeStamp() { 
-        const now = new Date(); 
-        const hours = now.getHours(); 
-        const minutes = now.getMinutes(); 
-        const seconds = now.getSeconds(); 
-        const amPm = hours >= 12 ? 'PM' : 'AM'; 
-        const formattedHours = hours % 12 || 12; 
-        return `${formattedHours}:${padZero(minutes)}:${padZero(seconds)} ${amPm}`; 
-    } 
-
-    function padZero(value) { 
-        return value < 10 ? `0${value}` : value; 
-    } 
-});
+    fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+    })
+    .then(response => {
+        if (response.ok) {
+            log.innerHTML += '<p style="color: green;">Message sent successfully!</p>';
+        } else if (response.status === 429) {
+            log.innerHTML += '<p style="color: red;">Rate limited! Please slow down.</p>';
+        } else {
+            log.innerHTML += `<p style="color: red;">Error: ${response.statusText}</p>`;
+        }
+    })
+    .catch(error => {
+        log.innerHTML += `<p style="color: red;">Error: ${error.message}</p>`;
+    });
+}
