@@ -39,6 +39,11 @@ input:hover {
     border-color: #666;
 }
 
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
 button {
     background-color: #7289da;
     color: #fff;
