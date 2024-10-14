@@ -62,13 +62,6 @@ input:focus {
     outline: none;
 }
 
-#url, #username, #message, #avatar {
-    width: 100%;
-    height: 100px;
-    margin-top: 10px;
-    border-radius: 50%;
-}
-
 #log {
     margin-top: 20px;
     text-align: left;
