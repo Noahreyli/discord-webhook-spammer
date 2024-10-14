@@ -62,11 +62,6 @@ input:focus {
     height: 100px;
     margin-top: 10px;
     border-radius: 50%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    background-color: #f3f3f3;
-    color: #000;
 }
 
 #log {
