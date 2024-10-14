@@ -8,7 +8,7 @@ function startSpam() {
     const log = document.getElementById("log");
 
     if (!webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
-        log.innerHTML = '<p style="color: red;">Invalid Webhook URL</p>';
+        log.innerHTML = '<p style="color: white;">URLが無効です</p>';
         return;
     }
 
@@ -26,7 +26,7 @@ function stopSpam() {
     document.getElementById("start").disabled = false;
     document.getElementById("stop").disabled = true;
     const log = document.getElementById("log");
-    log.innerHTML += '<p style="color: green;">Spamming stopped</p>';
+    log.innerHTML += '<p style="color: green;">停止されました</p>';
 }
 
 function sendWebhook(webhookUrl, username, avatarUrl, message, log) {
@@ -45,9 +45,9 @@ function sendWebhook(webhookUrl, username, avatarUrl, message, log) {
     })
     .then(response => {
         if (response.ok) {
-            log.innerHTML += '<p style="color: green;">Message sent successfully!</p>';
+            log.innerHTML += '<p style="color: green;">メッセージは正常に送信されました</p>';
         } else if (response.status === 429) {
-            log.innerHTML += '<p style="color: red;">Rate limited! Please slow down.</p>';
+            log.innerHTML += '<p style="color: red;">レート制限にかかりました</p>';
         } else {
             log.innerHTML += `<p style="color: red;">Error: ${response.statusText}</p>`;
         }
