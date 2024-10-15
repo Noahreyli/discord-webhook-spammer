@@ -1,81 +1,85 @@
+/* 全体の設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #2c2f33;
-    color: #ffffff;
+    background-color: #f4f4f4;
+    color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
 }
 
 .container {
-    background-color: #23272a;
+    background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    width: 400px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
 }
 
-input {
+label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
     width: 100%;
     padding: 10px;
-    margin: 10px 0;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    border: 1px solid #444;
-    background-color: #2c2f33;
-    color: #fff;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    font-size: 16px;
 }
 
-input:hover {
-    background-color: #3a3d42;
-    border-color: #666;
+input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-button {
-    background-color: #7289da;
-    color: #fff;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #007bff;
     border: none;
-    padding: 10px 20px;
     border-radius: 5px;
+    color: white;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #677bc4;
+.buttons:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
-input:focus {
-    outline: none;
+.buttons:hover:not(:disabled) {
+    background-color: #0056b3;
 }
 
-#start, #stop {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-}
-
-#log {
+.log {
     margin-top: 20px;
-    text-align: left;
-    background-color: #1f2124;
     padding: 10px;
+    background-color: #f8f9fa;
     border-radius: 5px;
-    height: 200px;
+    border: 1px solid #ddd;
+    max-height: 150px;
     overflow-y: auto;
+    font-size: 14px;
+    color: #555;
 }
 
-@media (max-width: 600px) {
-    .container {
-        width: 90%;
-    }
+.log div {
+    margin-bottom: 10px;
 }
